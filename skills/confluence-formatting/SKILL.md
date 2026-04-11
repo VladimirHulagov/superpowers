@@ -128,6 +128,16 @@ Cells support inline formatting: `*bold*`, `_italic_`, `{{code}}`, `~~strike~~`
 [Anchor|#section-id]
 ```
 
+**Repository links:** Always use HTTPS for GitHub/GitLab/Bitbucket repository links (not SSH):
+
+```wiki
+# ✅ Correct - https repository
+Repository: [https://git.yadro.com/~user/repo|https://git.yadro.com/~user/repo]
+
+# ❌ Wrong - ssh repository
+Repository: ssh://git@b.yadro.com:7999/~user/repo.git
+```
+
 ## Images
 
 ```wiki
@@ -267,6 +277,42 @@ B --> DB : stores
 | Missing `endif` for `if` in PlantUML | Count `if`/`endif` pairs |
 | Long participant names in PlantUML | Use short names |
 | Overwriting page without reading first | Always read, modify, then write |
+| Using `**` inside `*...*` (nested bold markers) | Avoid nested `**` in bold sections |
+| Using `*` inside `**...*` (nested bold markers) | Avoid nested `*` in bold sections |
+
+**Nested formatting issue:** Confluence wiki doesn't support nested markers like `*Text **bold** more*` or `**Text *italic* more**`. This will break rendering.
+
+**Instead of:**
+```wiki
+*Nested bold:* Text **breaks** formatting
+```
+
+**Use one of these options:**
+
+1. Plain label in info panel:
+```wiki
+{info}*Label:* Text *{bold}{bold} works here{info}
+```
+
+2. Just bold, no label:
+```wiki
+Text **bold** without label markers
+```
+
+3. Use code block for technical terms:
+```wiki
+*Label:* Text {{bold formatting}} using code
+```
+
+**Repository links:** Always use HTTPS for GitHub/GitLab/Bitbucket:
+
+```wiki
+# ✅ Correct
+Repository: [repo-name|https://git.yadro.com/~user/repo]
+
+# ❌ Wrong - SSH breaks web interface access
+Repository: ssh://git@yadro.com:7999/~user/repo.git
+``` |
 
 ## Workflow
 
