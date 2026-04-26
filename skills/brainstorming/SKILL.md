@@ -29,7 +29,8 @@ You MUST create a task for each of these items and complete them in order:
 6. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
 7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
 8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+9. **Choose execution mode** — ask user: subagent-driven (recommended) or inline execution
+10. **Transition to implementation** — invoke writing-plans skill with execution mode
 
 ## Process Flow
 
@@ -45,7 +46,8 @@ digraph brainstorming {
     "Write design doc" [shape=box];
     "Spec self-review\n(fix inline)" [shape=box];
     "User reviews spec?" [shape=diamond];
-    "Invoke writing-plans skill" [shape=doublecircle];
+    "Choose execution mode?" [shape=diamond];
+    "Invoke writing-plans skill\n(with execution mode)" [shape=doublecircle];
 
     "Explore project context" -> "Visual questions ahead?";
     "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
@@ -59,7 +61,8 @@ digraph brainstorming {
     "Write design doc" -> "Spec self-review\n(fix inline)";
     "Spec self-review\n(fix inline)" -> "User reviews spec?";
     "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+    "User reviews spec?" -> "Choose execution mode?" [label="approved"];
+    "Choose execution mode?" -> "Invoke writing-plans skill\n(with execution mode)" [label="subagent-driven\nor inline"];
 }
 ```
 
@@ -132,7 +135,10 @@ Wait for the user's response. If they request changes, make them and re-run the 
 
 **Implementation:**
 
-- Invoke the writing-plans skill to create a detailed implementation plan
+- Ask user to choose execution mode:
+  - **Subagent-Driven:** Fresh subagent per task, review between tasks, fast iteration (recommended)
+  - **Inline Execution:** Execute tasks in this session, batch execution with checkpoints
+- Invoke the writing-plans skill and pass the chosen execution mode
 - Do NOT invoke any other skill. writing-plans is the next step.
 
 ## Key Principles
