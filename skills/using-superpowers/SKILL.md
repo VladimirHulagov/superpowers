@@ -104,6 +104,38 @@ When multiple skills could apply, use this order:
 "Let's build X" → brainstorming first, then implementation skills.
 "Fix this bug" → debugging first, then domain-specific skills.
 
+## Hardware Routing
+
+When the task involves physical measurement, power, or instrumentation, route to the correct hardware skill:
+
+```dot
+digraph hw_routing {
+    "Hardware task?" [shape=diamond];
+    "bitscope-oscilloscope" [shape=box];
+    "nice-power-psu" [shape=box];
+    "aneng-bluetooth-dmm" [shape=box];
+    "Multiple devices" [shape=box];
+
+    "Hardware task?" -> "bitscope-oscilloscope" [label="signal, waveform,\nvoltage trace, scope,\nlogic, frequency"];
+    "Hardware task?" -> "nice-power-psu" [label="power supply, PSU,\nvoltage output, current\nlimit, load power"];
+    "Hardware task?" -> "aneng-bluetooth-dmm" [label="multimeter, DMM,\nmeasure voltage/current/\nresistance, BLE meter"];
+    "bitscope-oscilloscope" -> "Multiple devices" [label="combined test"];
+    "nice-power-psu" -> "Multiple devices" [label="combined test"];
+    "aneng-bluetooth-dmm" -> "Multiple devices" [label="combined test"];
+}
+```
+
+| Ключевые слова | Навык |
+|----------------|-------|
+| осциллограф, scope, сигнал, waveform, capture, логический анализатор, trigger, AWG, clock, CH-A, CH-B, частота сигнала, noise, ripple, UART/SPI/I2C decode | **bitscope-oscilloscope** |
+| блок питания, PSU, power supply, напряжение на выходе, ток, current limit, load, питать, подать питание, serial USB PSU, Nice Power, Kuaiqu | **nice-power-psu** |
+| мультиметр, DMM, multimeter, измерить напряжение/ток/сопротивление, BLE meter, Bluetooth DMM, Aneng, Zotec, BSIDE, MQTT логирование измерений | **aneng-bluetooth-dmm** |
+
+**Комбинированные задачи** — используйте несколько навыков. Типичные комбинации:
+- PSU подаёт питание → DMM измеряет напряжение/ток нагрузки
+- PSU подаёт питание → осциллограф проверяет ripple/noise
+- PSU + DMM + scope: полная характеристика платы
+
 ## Skill Types
 
 **Rigid** (TDD, debugging): Follow exactly. Don't adapt away discipline.
